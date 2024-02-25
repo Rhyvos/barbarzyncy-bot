@@ -29,7 +29,7 @@ Feel free to contribute to the project by forking the repository, making changes
 
 ## Authors
 
-- Your Name ([@github_username](https://github.com/rhyvos))
+- Your Name ([@Rhyvos](https://github.com/Rhyvos))
 
 ## License
 
