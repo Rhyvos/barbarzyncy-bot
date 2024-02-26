@@ -12,12 +12,21 @@ These instructions will get you a copy of the project up and running on your loc
 - Python 3.x
 - Packages: 
   - python-dotenv
+  - gitdb
+  - GitPython
+  - psutil
+  - python-dotenv
+  - schedule=
+  - Send2Trash
+  - smmap
 
 ### Installing
 
 1. Clone the repository: `git clone https://github.com/Rhyvos/barbarzyncy-bot`
 2. Navigate to the project directory: `cd barbarzyncy-bot`
 3. Install dependencies: `pip install -r requirements.txt`
+4. Run setup script: `python setup.py`
+5. Run the bot: `python run_bot.py`
 
 ## Usage
 
