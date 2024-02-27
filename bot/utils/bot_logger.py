@@ -7,8 +7,10 @@ load_dotenv()
 def bot_logger(prefix=""):
     logs_dir = os.environ.get('LOGS_DIR')
 
-    if not os.path.exists(logs_dir):
+    if logs_dir is not None and not os.path.exists(logs_dir):
         os.makedirs(logs_dir)
+    else:
+        logs_dir = ''
     
     log_file = os.path.join(logs_dir, 'bot_status.log')
 
