@@ -10,7 +10,6 @@ from check_bot_health import reset
 logger = bot_logger("update_bot")
 
 def update_bot():
-    """Pull the latest changes from the git repository, update packages, and restart the bot service."""
     logger.info("Starting bot update.")
 
     repo = git.Repo(os.getcwd())
@@ -23,19 +22,18 @@ def update_bot():
     logger.info("Bot update completed successfully.")
 
 def check_for_updates():
-    """Check the repository for new commits and trigger bot update if necessary."""
     logger.info("Checking for updates...")
     repo = git.Repo(os.getcwd())
     origin = repo.remotes.origin
     origin.fetch()
 
-    local_commit = repo.commit()
-    remote_commit = origin.refs.master.commit
-    if local_commit != remote_commit:
-        logger.info("New commits found. Starting bot update.")
+    local_commit = repo.git.rev_parse("HEAD")
+    remote_commit = repo.git.rev_parse("origin/master")
+    if repo.git.rev_list(f"{local_commit}..{remote_commit}"):
+        logger.info("Local repository is behind remote. Starting bot update.")
         update_bot()
     else:
-        logger.info("No new commits.")
+        logger.info("Local repository is up-to-date with the remote.")
 
 @log
 def run_command(command):

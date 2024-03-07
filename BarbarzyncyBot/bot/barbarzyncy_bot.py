@@ -31,4 +31,5 @@ async def main():
         await server.serve_forever()
 
 if __name__ == "__main__":
+    logger.info('Starting BarbarzyncyBot')
     asyncio.run(main())

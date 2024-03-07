@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+
+{% block title %}Bot Settings{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Settings</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <form method="post" class="needs-validation" novalidate id="bot-settings-form">
+            {% csrf_token %}
+            {% if error_message %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Błąd:</strong> {{ error_message }}
+                </div>
+            {% endif %}
+            {% for form in forms %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <div class="input-group" style="width: 500px;">
+                            <div class="input-group-prepend" style="width: 200px;">
+                                <span class="input-group-text">{{ field.label_tag }}</span>
+                            </div>
+                            {{ field }}
+                        </div>
+
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+
+                        <div class="invalid-feedback">
+                            {{ field.errors.as_text }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <button class="btn btn-primary" type="submit" id="submitButton">
+                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loadingSpinner"></span>
+                <span id="buttonText">Ok</span>
+            </button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('submitButton').addEventListener('click', function() {
+            document.getElementById('loadingSpinner').classList.remove('d-none');
+            var buttonTextElement = document.getElementById('buttonText');
+            buttonTextElement.innerText = 'Loading...';
+            this.setAttribute('disabled', 'true');
+            this.form.submit();
+        });
+        function submitForm() {
+            document.getElementById("bot-settings-form").submit();
+        }
+        document.getElementById("id_GUILD_ID").addEventListener("change", submitForm);
+    </script>
+</body>
+</html>
+{% endblock %}

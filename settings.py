@@ -1,15 +1,25 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+
+DOTENV_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'BarbarzyncyBot', '.env')
+
+load_dotenv(DOTENV_PATH)
 
 def set_project_paths(env_file):
-    project_root = os.path.abspath(os.path.dirname(__file__))
+    project_root = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'BarbarzyncyBot')
     log_dir = os.path.join(project_root, 'logs')
     db_dir = os.path.join(project_root, 'db')
+    bot_dir = os.path.join(project_root, 'bot')
+    bot_path = os.path.join(bot_dir, 'barbarzyncy_bot.py')
+    requirements_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'requirements.txt')
+
     env_file.write(f'\nPROJECT_ROOT={project_root}')
     env_file.write(f'\nLOGS_DIR={log_dir}')
     env_file.write(f'\nDB_DIR={db_dir}')
+    env_file.write(f'\nBOT_DIR={bot_dir}')
+    env_file.write(f'\nBOT_PATH={bot_path}')
+    env_file.write(f'\nREQUIREMENTS_PATH={requirements_path}')
 
 def set_or_exchange_token(env_file, exchange_token=False):
     print("Getting token...")
@@ -27,6 +37,6 @@ def set_or_exchange_token(env_file, exchange_token=False):
 def load_settings():
     print("Setting up environment...")
     
-    with open('.env', 'w') as env_file:
+    with open(DOTENV_PATH, 'w') as env_file:
         set_project_paths(env_file)
-        set_or_exchange_token(env_file)
+        # set_or_exchange_token(env_file)

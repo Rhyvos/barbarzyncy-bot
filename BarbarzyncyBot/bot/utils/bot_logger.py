@@ -6,10 +6,9 @@ load_dotenv()
 
 def bot_logger(prefix=""):
     logs_dir = os.environ.get('LOGS_DIR')
-
     if logs_dir is not None and not os.path.exists(logs_dir):
         os.makedirs(logs_dir)
-    else:
+    elif logs_dir is None:
         logs_dir = ''
     
     log_file = os.path.join(logs_dir, 'bot_status.log')
@@ -28,7 +27,7 @@ def bot_logger(prefix=""):
 def log(func):
     def wrapper(*args, **kwargs):
         logger = bot_logger(func.__name__)
-        logger.info(f"Function {func.__name__} is about to be called.")
+        logger.info(f"Function {func.__name__} is about to be called. Args: {args}, Kwargs: {kwargs}.")
         result = func(*args, **kwargs)
         logger.info(f"Function {func.__name__} has been called with result: {result}.")
         return result

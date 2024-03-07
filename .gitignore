@@ -1,7 +1,15 @@
 .env
 .venv
-__pycache__
 /logs
 /db
+
+# Django #
 *.log
-*.db
+*.pot
+*.pyc
+__pycache__
+*.sqlite3
+media
+
+# Backup files # 
+*.bak 

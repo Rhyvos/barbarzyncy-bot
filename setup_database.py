@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from dotenv import load_dotenv
-from bot.utils.bot_logger import bot_logger
+from BarbarzyncyBot.bot.utils.bot_logger import bot_logger
 
 
 
@@ -13,7 +13,7 @@ def create_database():
     if not os.path.exists(db_dir):
         os.makedirs(db_dir)
     
-    db_file = os.path.join(db_dir, 'bot.db')
+    db_file = os.path.join(db_dir, 'bot.sqlite3')
 
     if os.path.exists(db_file):
         logger.info('bot.db exists, skipping creation...')

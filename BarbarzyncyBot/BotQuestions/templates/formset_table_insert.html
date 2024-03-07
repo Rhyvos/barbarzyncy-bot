@@ -1,0 +1,13 @@
+{% block content %}
+  {{ formset.management_form }}
+  {% for form in formset %}
+    <tr>
+      {{ form.id }}
+      {% for field in form %}
+        {% if field.field.widget.input_type != 'hidden' %}
+          <td{% if field.field.widget.input_type == 'checkbox' %} class="text-center"{% endif %}>{{ field }}</td>
+        {% endif %}
+      {% endfor %}
+    </tr>
+  {% endfor %}
+{% endblock %}
