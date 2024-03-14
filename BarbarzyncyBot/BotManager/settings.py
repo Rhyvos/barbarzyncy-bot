@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'BotSettings',
     'BotQuestions',
+    'DiscordBot',
+    'WelcomeMessage',
+    'RestartBot',
+    'LogsViewer',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +64,9 @@ TEMPLATES = [
             BASE_DIR / 'templates',
             BASE_DIR / 'BotSettings' / 'templates',
             BASE_DIR / 'BotQuestions' / 'templates',
+            BASE_DIR / 'WelcomeMessage' / 'templates',
+            BASE_DIR / 'RestartBot' / 'templates',
+            BASE_DIR / 'LogsViewer' / 'templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {

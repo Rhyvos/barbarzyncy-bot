@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Logs</h2>
+    <div class="form-group">
+        <label for="logTextArea">Log Entries:</label>
+        <textarea class="form-control" id="daneTextarea" rows="20" readonly>
+        {{ log_entries }}
+        </textarea>
+    </div>
+
+    <a href="{% url 'download-logs' %}" class="btn btn-primary">Download Logs</a>
+</div>
+{% endblock %}

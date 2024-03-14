@@ -3,7 +3,7 @@ from .models import RequirementType, AnswerType, Question
 
 @admin.register(RequirementType)
 class RequirementTypeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'type_name')
+    list_display = ('id', 'type_name', 'enabled')
 
 @admin.register(AnswerType)
 class AnswerTypeAdmin(admin.ModelAdmin):

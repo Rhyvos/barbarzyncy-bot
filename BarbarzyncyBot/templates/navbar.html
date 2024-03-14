@@ -18,9 +18,18 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item {% if request.resolver_match.url_name == 'question-list' %}active{% endif %}" href="{% url 'question-list' %}">Questions</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'answer-type-list' %}active{% endif %}" href="{% url 'answer-type-list' %}">Answer Types</a></li>
+            <!-- <li><a class="dropdown-item {% if request.resolver_match.url_name == 'answer-type-list' %}active{% endif %}" href="{% url 'answer-type-list' %}">Answer Types</a></li> -->
             <li><a class="dropdown-item {% if request.resolver_match.url_name == 'requirement-type-list' %}active{% endif %}" href="{% url 'requirement-type-list' %}">Requirement Types</a></li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'welcome-message' %}active{% endif %}" href="{% url 'welcome-message' %}">Welcome Message</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'run-bot' %}active{% endif %}" href="{% url 'run-bot' %}">Run Bot</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'view-logs' %}active{% endif %}" href="{% url 'view-logs' %}">Logs</a>
         </li>
         {% if user.is_staff %}
         <li class="nav-item">

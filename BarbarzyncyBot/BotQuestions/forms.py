@@ -5,8 +5,9 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = '__all__'
+        exclude = ['answer_type']
         widgets = {
-            'question_text': forms.Textarea(attrs={'class': 'form-control autosize', 'rows': 1}),
+            'question_text': forms.Textarea(attrs={'class': 'form-control autosize', 'rows': 1, 'max_length': 256}),
             'requirement_type': forms.Select(attrs={'class': 'form-select'}),
             'answer_type': forms.Select(attrs={'class': 'form-select'}),
             'enabled': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
@@ -24,9 +25,11 @@ class RequirementTypeForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'type_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'enabled': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
         labels = {
             "type_name": "Requirement Type",
+            "enabled": "Enabled",
         }
 
 class AnswerTypeForm(forms.ModelForm):

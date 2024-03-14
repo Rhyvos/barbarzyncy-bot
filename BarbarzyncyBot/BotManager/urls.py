@@ -22,6 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('BotSettings.urls')),
     path('', include('BotQuestions.urls')),
+    path('', include('WelcomeMessage.urls')),
+    path('', include('RestartBot.urls')),
+    path('', include('LogsViewer.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path("accounts/", include("django.contrib.auth.urls")),
 ]
