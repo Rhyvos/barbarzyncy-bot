@@ -1,6 +1,6 @@
 import discord
 from discord import ui
-from asyncio import sync_to_async
+from asgiref.sync import sync_to_async
 from functools import partial
 
 from .DynamicView import DynamicView

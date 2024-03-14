@@ -21,15 +21,14 @@ def set_project_paths(env_file):
     env_file.write(f'\nBOT_PATH={bot_path}')
     env_file.write(f'\nREQUIREMENTS_PATH={requirements_path}')
 
-def set_or_exchange_token(env_file, exchange_token=False):
-    print("Getting token...")
-    existing_token = os.environ.get('DISCORD_BOT_TOKEN')
+def set_or_exchange(env_file, name):
+    print("Getting {name}...")
+    existing_token = os.environ.get(name)
     if not existing_token:
-        user_token = input("Podaj token: ")
-    elif exchange_token:
-        change_token = input(f"Znalazłem już DISCORD_BOT_TOKEN={existing_token}. Czy chcesz zmienić token? (Y/N): ")
+        user_token = input("Podaj {name}: ")
+        change_token = input(f"Znalazłem już {name}={existing_token}. Czy chcesz zmienić? (Y/N): ")
         if change_token.lower() == 'y' or change_token.lower() == 'yes':
-            user_token = input("Podaj nowy token: ")
+            user_token = input("Podaj nowy {name}: ")
     else:
         user_token = existing_token
     env_file.write(f'\nDISCORD_BOT_TOKEN={user_token}')
@@ -39,4 +38,4 @@ def load_settings():
     
     with open(DOTENV_PATH, 'w') as env_file:
         set_project_paths(env_file)
-        # set_or_exchange_token(env_file)
+        set_or_exchange(env_file, 'SECRET_KEY')

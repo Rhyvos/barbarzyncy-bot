@@ -3,16 +3,14 @@ from discord.ext import commands
 
 from django.conf import settings as project_settings
 
-import dotenv
-from asgiref import sync
+from dotenv import dotenv_values
+from asgiref.sync import sync_to_async
 
 from BotQuestions.models import RequirementType
 from WelcomeMessage.models import WelcomeMessage
 from .DynamicView import DynamicView
 from .ApplicationGenerator import ApplicationGenerator
 from .utils.bot_logger import bot_logger
-
-dotenv.load_dotenv()
 
 
 class BotBarbarzynca(commands.Bot):
