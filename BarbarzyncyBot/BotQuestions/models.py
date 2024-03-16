@@ -23,7 +23,7 @@ class AnswerType(models.Model):
 class Question(models.Model):
     requirement_type = models.ForeignKey(RequirementType, on_delete=models.CASCADE)
     question_text = models.TextField(validators=[MaxLengthValidator(256)])
-    answer_type = models.ForeignKey(AnswerType, on_delete=models.CASCADE, default=lambda: AnswerType.objects.first())
+    answer_type = models.ForeignKey(AnswerType, on_delete=models.CASCADE, default=1)
     enabled = models.BooleanField()
 
     def __str__(self):

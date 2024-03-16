@@ -31,7 +31,7 @@ def set_or_exchange(env_file, name):
             user_token = input(f"Podaj nowy {name}: ")
     else:
         user_token = existing_token
-    env_file.write(f'\nDISCORD_BOT_TOKEN={user_token}')
+    env_file.write(f'\{name}={user_token}')
 
 def load_settings():
     print("Setting up environment...")
