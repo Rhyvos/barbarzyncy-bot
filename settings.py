@@ -22,13 +22,13 @@ def set_project_paths(env_file):
     env_file.write(f'\nREQUIREMENTS_PATH={requirements_path}')
 
 def set_or_exchange(env_file, name):
-    print("Getting {name}...")
+    print(f"Getting {name}...")
     existing_token = os.environ.get(name)
     if not existing_token:
-        user_token = input("Podaj {name}: ")
+        user_token = input(f"Podaj {name}: ")
         change_token = input(f"Znalazłem już {name}={existing_token}. Czy chcesz zmienić? (Y/N): ")
         if change_token.lower() == 'y' or change_token.lower() == 'yes':
-            user_token = input("Podaj nowy {name}: ")
+            user_token = input(f"Podaj nowy {name}: ")
     else:
         user_token = existing_token
     env_file.write(f'\nDISCORD_BOT_TOKEN={user_token}')
