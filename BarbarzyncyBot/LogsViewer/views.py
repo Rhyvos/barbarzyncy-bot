@@ -12,11 +12,14 @@ settings = dotenv_values(project_settings.ENV_PATH)
 def logs_view(request):
     log_entries = []
     log_file_path = os.path.join(settings['LOGS_DIR'], 'bot_status.log')
-    with open(log_file_path, 'r') as file:
-        lines = file.readlines()
-        log_entries = [line.rstrip('\r\n') for line in lines[-100:]]
-        log_entries = '\n'.join(log_entries)
-
+    try:
+        with open(log_file_path, 'r') as file:
+            lines = file.readlines()
+            log_entries = [line.rstrip('\r\n') for line in lines[-100:]]
+            log_entries = '\n'.join(log_entries)
+    except Exception as e:
+        return render(request, 'view_logs.html', {'log_entries': '', 'error_message': e})
+    
     context = {
         'log_entries': log_entries,
     }

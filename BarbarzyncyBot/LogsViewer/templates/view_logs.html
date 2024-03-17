@@ -2,6 +2,11 @@
 
 {% block content %}
 <div class="container mt-3">
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            <strong>Błąd:</strong> {{ error_message }}
+        </div>
+    {% endif %}
     <h2>Logs</h2>
     <div class="form-group">
         <label for="logTextArea">Log Entries:</label>
