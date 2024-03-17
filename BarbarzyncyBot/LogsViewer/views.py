@@ -13,7 +13,7 @@ def logs_view(request):
     log_entries = []
     log_file_path = os.path.join(settings['LOGS_DIR'], 'bot_status.log')
     try:
-        with open(log_file_path, 'r') as file:
+        with open(log_file_path, 'r', encoding='utf-8') as file:
             lines = file.readlines()
             log_entries = [line.rstrip('\r\n') for line in lines[-100:]]
             log_entries = '\n'.join(log_entries)

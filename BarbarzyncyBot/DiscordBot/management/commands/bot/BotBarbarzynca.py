@@ -113,6 +113,7 @@ class BotBarbarzynca(commands.Bot):
         """Regenerates all applications for the recruitment category."""
         category_id = int(self.settings["RECRUITMENT_CATEGORY_ID"])
         category = self.get_channel(category_id)
+        self.logger.info(f"Regenerating all applications in category: {category.name} (ID: {category.id})")
         if category:
             for channel in category.channels:
                 if channel.id != int(self.settings["RECRUITMENT_CHANNEL_ID"]):
@@ -129,6 +130,47 @@ class BotBarbarzynca(commands.Bot):
                             self, req_type, user
                         )
                         await application_generator.regenerate_application()
+
+
+    async def on_resumed(self):
+        self.logger.info(f"Resumed session as {self.user} (ID: {self.user.id})")
+        await self.tree.sync()
+
+        recruitment_channel = self.get_channel(
+            int(self.settings["RECRUITMENT_CHANNEL_ID"])
+        )
+        if recruitment_channel:
+            self.logger.info(f"Recruitment channel found {recruitment_channel.name} (ID: {recruitment_channel.id})")
+            requirement_types = await sync_to_async(list)(
+                RequirementType.objects.filter(enabled=True)
+            )
+            # Clear previous messages sent by the bot in the recruitment channel.
+            async for message in recruitment_channel.history(limit=200):
+                if message.author == self.user:
+                    await message.delete()
+
+            view = DynamicView("requirement_type")
+            for req_type in requirement_types:
+                button_label = f"Apply for {req_type.type_name}"
+                view.add_button(req_type.id, button_label, self.on_button_click)
+
+            welcome_message_obj = await sync_to_async(list)(
+                WelcomeMessage.objects.all()
+            )
+            welcome_message = (
+                welcome_message_obj[0].message
+                if welcome_message_obj
+                else "Select the type of application:"
+            )
+
+            await recruitment_channel.send(welcome_message, view=view)
+
+        else:
+            self.logger.info(
+                f"Recruitment channel with ID {self.settings['RECRUITMENT_CHANNEL_ID']} not found."
+            )
+
+        await self._regenerate_all_applications()
 
     def get_recruitment_category(self):
         """Returns the recruitment category channel."""
