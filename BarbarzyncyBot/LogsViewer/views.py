@@ -31,7 +31,7 @@ def download_logs(request):
     # Pobierz cały plik logów
     print('Downloading logs')
     log_file_path = os.path.join(settings['LOGS_DIR'], 'bot_status.log')
-    with open(log_file_path, 'r') as f:
+    with open(log_file_path, 'r', encoding='utf-8') as f:
         response = HttpResponse(f.read(), content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename="bot_status.log"'
     return response
