@@ -54,7 +54,7 @@ class BotBarbarzynca(commands.Bot):
             if await application_generator.check_existing_channel():
                 self.logger.info(f"User {user.name} already has an active application.")
                 await interaction.response.send_message(
-                    "You already have an active application. Please finish it before starting a new one.",
+                    "Masz już aktywne podanie. Usuń je, zanim zaczniesz nowe.",
                     ephemeral=True,
                     delete_after=10,
                 )
@@ -64,7 +64,7 @@ class BotBarbarzynca(commands.Bot):
                 await interaction.response.defer()
             else:
                 await interaction.response.send_message(
-                    "Something went wrong. Please report this to the officers.",
+                    "Coś poszło nie tak. Prosimy o zgłoszenie tego oficerom.",
                     ephemeral=True,
                     delete_after=10,
                 )
@@ -88,7 +88,7 @@ class BotBarbarzynca(commands.Bot):
 
             view = DynamicView("requirement_type")
             for req_type in requirement_types:
-                button_label = f"Apply for {req_type.type_name}"
+                button_label = f"Aplikuj do {req_type.type_name}"
                 view.add_button(req_type.id, button_label, self.on_button_click)
 
             welcome_message_obj = await sync_to_async(list)(
@@ -97,9 +97,9 @@ class BotBarbarzynca(commands.Bot):
             welcome_message = (
                 welcome_message_obj[0].message
                 if welcome_message_obj
-                else "Select the type of application:"
+                else "Wybierz rodzaj podania:"
             )
-
+            self.add_view(view)
             await recruitment_channel.send(welcome_message, view=view)
 
         else:
@@ -130,47 +130,6 @@ class BotBarbarzynca(commands.Bot):
                             self, req_type, user
                         )
                         await application_generator.regenerate_application()
-
-
-    async def on_resumed(self):
-        self.logger.info(f"Resumed session as {self.user} (ID: {self.user.id})")
-        await self.tree.sync()
-
-        recruitment_channel = self.get_channel(
-            int(self.settings["RECRUITMENT_CHANNEL_ID"])
-        )
-        if recruitment_channel:
-            self.logger.info(f"Recruitment channel found {recruitment_channel.name} (ID: {recruitment_channel.id})")
-            requirement_types = await sync_to_async(list)(
-                RequirementType.objects.filter(enabled=True)
-            )
-            # Clear previous messages sent by the bot in the recruitment channel.
-            async for message in recruitment_channel.history(limit=200):
-                if message.author == self.user:
-                    await message.delete()
-
-            view = DynamicView("requirement_type")
-            for req_type in requirement_types:
-                button_label = f"Apply for {req_type.type_name}"
-                view.add_button(req_type.id, button_label, self.on_button_click)
-
-            welcome_message_obj = await sync_to_async(list)(
-                WelcomeMessage.objects.all()
-            )
-            welcome_message = (
-                welcome_message_obj[0].message
-                if welcome_message_obj
-                else "Select the type of application:"
-            )
-
-            await recruitment_channel.send(welcome_message, view=view)
-
-        else:
-            self.logger.info(
-                f"Recruitment channel with ID {self.settings['RECRUITMENT_CHANNEL_ID']} not found."
-            )
-
-        await self._regenerate_all_applications()
 
     def get_recruitment_category(self):
         """Returns the recruitment category channel."""

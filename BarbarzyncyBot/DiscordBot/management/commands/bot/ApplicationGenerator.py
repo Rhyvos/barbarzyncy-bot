@@ -17,7 +17,7 @@ class ApplicationGenerator:
         self.bot = bot
         self.req_type = req_type
         self.user = user
-        self.channel_name = f"{self.req_type.type_name}-{self.user.name}"
+        self.channel_name = f"{self.req_type.type_name}-{self.user.name}".lower()
         self.logger.info(
             f"New recruitment application User:{self.user.name} Type:{self.req_type.type_name}"
         )
@@ -66,7 +66,7 @@ class ApplicationGenerator:
 
         view = DynamicView(self.channel_name)
         self._add_buttons_to_view(view)
-
+        self.bot.add_view(view)
         channel_permissions = channel.overwrites_for(self.user)
         channel_permissions.update(
             view_channel=True,
@@ -91,7 +91,7 @@ class ApplicationGenerator:
             await channel.delete()
         else:
             await interaction.response.send_message(
-                f"Application can only be deleted by {application_owner}",
+                f"Podanie możne usunąć wyłącznie {application_owner}",
                 ephemeral=True,
             )
 
@@ -100,44 +100,28 @@ class ApplicationGenerator:
         application_owner = channel.name.split("-")[-1]
         if interaction.user.name != application_owner:
             await interaction.response.send_message(
-                f"Application can only be edited by {application_owner}",
+                f"Podanie możne edytować wyłącznie {application_owner}",
                 ephemeral=True,
             )
             return
 
         await interaction.response.send_message(
-            "Processing your request...", ephemeral=True, delete_after=5
+            "Przetwarzam żądanie...", ephemeral=True, delete_after=5
         )
         await self._process_edit_application_interaction(interaction)
 
     async def _process_edit_application_interaction(self, interaction):
         channel = interaction.channel
-        embeded_message = False
-        async for message in channel.history(limit=200):
-            if embeded_message:
-                break
+        views = await self._generate_application_buttons(channel)
 
-            for embed in message.embeds:
-                embeded_message = True
-                for index, field in enumerate(embed.fields, start=0):
-                    view = DynamicView(self.channel_name)
-                    view.add_button(
-                        f"field:{index}",
-                        "Fill In",
-                        partial(
-                            self.on_button_click_edit_application_field,
-                            message=message,
-                            field_index=index,
-                        ),
-                        style=discord.ButtonStyle.blurple,
-                    )
-                    await interaction.followup.send(
-                        f"**{field.name}**", view=view, ephemeral=True
-                    )
-
-        if not embeded_message:
+        for view, field in views:
             await interaction.followup.send(
-                "No questions found in the application", ephemeral=True
+                f"**{field.name}**", view=view, ephemeral=True
+            )
+
+        if len(views) == 0:
+            await interaction.followup.send(
+                "Nie znaleziono pytań w podaniu.", ephemeral=True
             )
 
     async def on_button_click_edit_application_field(
@@ -166,52 +150,58 @@ class ApplicationGenerator:
 
     async def regenerate_application(self):
         view = DynamicView(self.channel_name)
+        self._add_buttons_to_view(view)
+        self.bot.add_view(view)
+        channel = discord.utils.get(
+            self.bot.get_all_channels(), name=self.channel_name.lower()
+        )
+        if channel is not None:
+            self._generate_application_buttons = await self._generate_application_buttons(channel)
+        else:
+            self.logger.info(
+                f"Kanał {self.channel_name.lower()} nie został znaleziony."
+            )
+
+    async def _generate_application_buttons(self, channel):
+        embeded_message = False
+        views = []
+        async for message in channel.history(limit=200):
+            if embeded_message:
+                break
+
+            for embed in message.embeds:
+                embeded_message = True
+                for index, field in enumerate(embed.fields, start=0):
+                    view = self._generate_fill_in_button(index, message)
+                    views.append((view, field))
+        return views
+    
+
+    def _generate_fill_in_button(self, index, message):
+        view = DynamicView(self.channel_name)
+        view.add_button(
+            f"field:{index}",
+            "Uzupełnij",
+            partial(
+                self.on_button_click_edit_application_field,
+                message=message,
+                field_index=index,
+            ),
+            style=discord.ButtonStyle.blurple,
+        )
+        self.bot.add_view(view)
+        return view
+
+    def _add_buttons_to_view(self, view):
         view.add_button(
             "edit_application",
-            "Edytuj",
+            "Edytuj podanie",
             self.on_button_click_edit_application,
             style=discord.ButtonStyle.green,
         )
         view.add_button(
             "remove_channel",
             "Usuń podanie",
-            self.on_button_click_remove_channel,
-            style=discord.ButtonStyle.red,
-        )
-        self.bot.add_view(view)
-        channel = discord.utils.get(
-            self.bot.get_all_channels(), name=self.channel_name.lower()
-        )
-        if channel is not None:
-            async for message in channel.history(limit=200):
-                for embed in message.embeds:
-                    for index, field in enumerate(embed.fields, start=0):
-                        view = DynamicView(self.channel_name)
-                        view.add_button(
-                            f"field:{index}",
-                            "Uzupełnij",
-                            partial(
-                                self.on_button_click_edit_application_field,
-                                message=message,
-                                field_index=index,
-                            ),
-                        )
-                        self.bot.add_view(view)
-        else:
-            self.logger.info(
-                f"Kanał {self.channel_name.lower()} nie został znaleziony."
-            )
-
-    def _add_buttons_to_view(self, view):
-        view.add_button(
-            "edit_application",
-            "Edit",
-            self.on_button_click_edit_application,
-            style=discord.ButtonStyle.green,
-        )
-        view.add_button(
-            "remove_channel",
-            "Remove application",
             self.on_button_click_remove_channel,
             style=discord.ButtonStyle.red,
         )
