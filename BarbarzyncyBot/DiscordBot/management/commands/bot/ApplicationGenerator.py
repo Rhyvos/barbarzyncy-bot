@@ -77,7 +77,7 @@ class ApplicationGenerator:
         await channel.set_permissions(self.user, overwrite=channel_permissions)
 
         await channel.send(
-            f"Welcome {self.user.mention}! Starting the recruitment process for {self.req_type.type_name}."
+            f"Witaj {self.user.mention}! Rozpoczynam proces rekrutacyjny na {self.req_type.type_name}."
         )
         await channel.send(embed=embed, view=view)
 
