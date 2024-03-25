@@ -13,18 +13,19 @@ logger = bot_logger("update_bot")
 
 def update_bot():
     logger.info("Starting bot update.")
-
-    repo = git.Repo(os.getcwd())
+    
+    repo = git.Repo(os.getenv("PROJECT_ROOT"))
     origin = repo.remotes.origin
     origin.pull()
 
-    return run_command("pip install -U -r requirements.txt")
+    requirements_path = os.path.join(os.getenv("PROJECT_ROOT"), "requirements.txt")
+    return run_command(f"pip install -U -r {requirements_path}")
 
 
 def check_for_updates():
     logger.info("Checking for updates...")
     try: 
-        repo = git.Repo(os.getcwd())
+        repo = git.Repo(os.getenv("PROJECT_ROOT"))
         origin = repo.remotes.origin
         origin.fetch()
 
