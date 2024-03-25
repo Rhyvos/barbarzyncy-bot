@@ -73,7 +73,7 @@ class RecruitmentCommands(commands.Cog):
                 messages.append("==============================")
             else:
                 messages.append(emoji.demojize(f"{message.author.display_name}:"))
-                messages.append(f"  {message.clean_content}")
+                messages.append(emoji.demojize(f"  {message.clean_content}"))
                 messages.append("")
         summary_embed = discord.Embed(title="Podsumowanie rekrutacji")
 
