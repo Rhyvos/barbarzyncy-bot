@@ -11,6 +11,7 @@ from WelcomeMessage.models import WelcomeMessage
 from .DynamicView import DynamicView
 from .ApplicationGenerator import ApplicationGenerator
 from .utils.bot_logger import bot_logger
+import psutil
 
 
 class BotBarbarzynca(commands.Bot):
@@ -38,6 +39,8 @@ class BotBarbarzynca(commands.Bot):
 
     async def setup_hook(self):
         """Loads all initial extensions for the bot."""
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+            self.logger.info(f"psutil:{proc}")
         for extension in self.initial_extensions:
             await self.load_extension(extension)
 
