@@ -42,9 +42,13 @@ class RecruitmentCommands(commands.Cog):
             return False
 
         user_roles = ctx.author.roles
-        self.bot.logger.info(f"{officer_role.name} - {officer_role.position}")
+        self.bot.logger.info(f"officer_role:{officer_role.name} - {officer_role.position}")
         for role in user_roles:
             self.bot.logger.info(f"{role.name} - {role.position}")
+        self.bot.logger.info(f"any:{any(
+            role.id == self.officer_role_id or role.position > officer_role.position
+            for role in user_roles
+        )}")
         return any(
             role.id == self.officer_role_id or role.position > officer_role.position
             for role in user_roles
