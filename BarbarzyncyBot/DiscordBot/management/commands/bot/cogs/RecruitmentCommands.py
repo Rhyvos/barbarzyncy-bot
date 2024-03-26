@@ -36,33 +36,24 @@ class RecruitmentCommands(commands.Cog):
         return False
 
     async def check_officer_role(self, ctx):
-        self.bot.logger.info(f"checking officer role: {self.officer_role_id}")
         officer_role = ctx.guild.get_role(self.officer_role_id)
         if officer_role is None:
             self.bot.logger.error(f"Role not found: {self.officer_role_id}")
             return False
 
         user_roles = ctx.author.roles
-        self.bot.logger.info(f"officer_role:{officer_role.name} - {officer_role.position}")
-        for role in user_roles:
-            self.bot.logger.info(f"{role.name} - {role.position}")
+
         ret = any(role.id == self.officer_role_id or role.position > officer_role.position for role in user_roles)
-        self.bot.logger.info(f"any:{ret}")
-        return any(
-            role.id == self.officer_role_id or role.position > officer_role.position
-            for role in user_roles
-        )
+        return ret
 
     async def check_channel(self, ctx):
-        self.bot.logger.info(f"Checking channel")
         if (
             ctx.channel.category_id == self.recruitment_category_id
             and ctx.channel.id != self.recruitment_channel_id
         ):
-            self.bot.logger.info(f"Correct channel: {ctx.channel.name}")
             return True
         else:
-            self.bot.logger.info(f"Incorrect channel: {ctx.channel.name}")
+            self.bot.logger.error(f"Incorrect channel: {ctx.channel.name}")
             return False
 
     async def close_recruitment(self, ctx, result_channel_id):
