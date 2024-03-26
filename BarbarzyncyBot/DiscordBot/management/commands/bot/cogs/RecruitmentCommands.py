@@ -54,6 +54,7 @@ class RecruitmentCommands(commands.Cog):
         )
 
     async def check_channel(self, ctx):
+        self.bot.logger.info(f"Checking channel")
         if (
             ctx.channel.category_id == self.recruitment_category_id
             and ctx.channel.id != self.recruitment_channel_id
