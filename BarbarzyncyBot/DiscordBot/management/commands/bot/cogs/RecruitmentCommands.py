@@ -36,6 +36,7 @@ class RecruitmentCommands(commands.Cog):
         return False
 
     async def check_officer_role(self, ctx):
+        self.bot.logger.info(f"checking officer role: {self.officer_role_id}")
         officer_role = ctx.guild.get_role(self.officer_role_id)
         if officer_role is None:
             self.bot.logger.error(f"Nie znaleziono roli {self.officer_role_id}")
@@ -45,7 +46,7 @@ class RecruitmentCommands(commands.Cog):
         self.bot.logger.info(f"officer_role:{officer_role.name} - {officer_role.position}")
         for role in user_roles:
             self.bot.logger.info(f"{role.name} - {role.position}")
-        ret = any(role.id == self.officer_role_id or role.position > officer_role.positionfor for role in user_roles)
+        ret = any(role.id == self.officer_role_id or role.position > officer_role.position for role in user_roles)
         self.bot.logger.info(f"any:{ret}")
         return any(
             role.id == self.officer_role_id or role.position > officer_role.position
