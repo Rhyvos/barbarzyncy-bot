@@ -19,7 +19,8 @@ def update_bot():
     origin.pull()
 
     requirements_path = os.path.join(os.getenv("PROJECT_ROOT"), "requirements.txt")
-    return run_command(f"pip install -U -r {requirements_path}")
+    # return run_command(f"pip install -U -r {requirements_path}")
+    return "Success"
 
 
 def check_for_updates():
@@ -49,7 +50,3 @@ def run_command(command):
         return result
     except subprocess.CalledProcessError as e:
         return f"Command failed with error: {e.returncode}\n{e.output}"
-
-
-if __name__ == "__main__":
-    check_for_updates()
