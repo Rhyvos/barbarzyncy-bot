@@ -89,7 +89,7 @@ class BotBarbarzynca(commands.Bot):
                 if message.author == self.user:
                     await message.delete()
 
-            view = DynamicView("requirement_type")
+            view = DynamicView("requirement_type", self.logger)
             for req_type in requirement_types:
                 button_label = f"Aplikuj do {req_type.type_name}"
                 view.add_button(req_type.id, button_label, self.on_button_click)

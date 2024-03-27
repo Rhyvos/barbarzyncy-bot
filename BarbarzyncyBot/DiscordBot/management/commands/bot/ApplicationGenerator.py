@@ -64,7 +64,7 @@ class ApplicationGenerator:
                 name=f"{question.question_text}", value="<not filled in>", inline=False
             )
 
-        view = DynamicView(self.channel_name)
+        view = DynamicView(self.channel_name, self.logger)
         self._add_buttons_to_view(view)
         self.bot.add_view(view)
         channel_permissions = channel.overwrites_for(self.user)
@@ -149,7 +149,7 @@ class ApplicationGenerator:
         await interaction.response.send_modal(modal)
 
     async def regenerate_application(self):
-        view = DynamicView(self.channel_name)
+        view = DynamicView(self.channel_name, self.logger)
         self._add_buttons_to_view(view)
         self.bot.add_view(view)
         channel = discord.utils.get(
@@ -178,7 +178,7 @@ class ApplicationGenerator:
     
 
     def _generate_fill_in_button(self, index, message):
-        view = DynamicView(self.channel_name)
+        view = DynamicView(self.channel_name, self.logger)
         view.add_button(
             f"field:{index}",
             "Uzupełnij",
