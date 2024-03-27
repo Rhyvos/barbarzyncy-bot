@@ -28,6 +28,7 @@ class RecruitmentCommands(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, CheckFailure):
+            await ctx.defer(ephemeral=True)
             await ctx.send(
                 "Niestety, nie masz uprawnień do wykonania tej komendy tutaj.",
                 ephemeral=True,
@@ -57,6 +58,7 @@ class RecruitmentCommands(commands.Cog):
             return False
 
     async def close_recruitment(self, ctx, result_channel_id):
+        await ctx.defer(ephemeral=True)
         await ctx.reply(f"Przenoszę podanie do archiwum", ephemeral=True)
         summary = {"Oficer": f"{ctx.author.mention}"}
         messages = []

@@ -137,3 +137,11 @@ class BotBarbarzynca(commands.Bot):
     def get_recruitment_category(self):
         """Returns the recruitment category channel."""
         return self.get_channel(int(self.settings["RECRUITMENT_CATEGORY_ID"]))
+
+    async def on_interaction(self, interaction: discord.Interaction):
+        self.logger.info(f"Interaction: {interaction.data}")
+        self.logger.info("persistent_views:")
+        for view in self.persistent_views:
+            for child in view.children:
+                self.logger.info(f"    custom_id: {child.custom_id}")
+                self.logger.info(f"    {child}")
