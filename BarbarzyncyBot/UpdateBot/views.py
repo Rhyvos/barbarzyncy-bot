@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def update_bot(request):
-    call_command('update')
     try:
         ret = call_command('update')
         return render(request, 'update_bot.html', {'message': ret})
