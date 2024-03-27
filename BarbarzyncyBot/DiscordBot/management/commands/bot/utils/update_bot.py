@@ -34,7 +34,8 @@ def check_for_updates():
         remote_commit = repo.git.rev_parse("origin/master")
         if repo.git.rev_list(f"{local_commit}..{remote_commit}"):
             logger.info("Local repository is behind remote. Starting bot update.")
-            return update_bot()
+            ret = update_bot()
+            return ret
         else:
             logger.info("Local repository is up-to-date with the remote.")
             return "No updates found."
