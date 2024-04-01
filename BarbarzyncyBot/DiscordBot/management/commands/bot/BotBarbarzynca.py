@@ -145,3 +145,18 @@ class BotBarbarzynca(commands.Bot):
             for child in view.children:
                 self.logger.info(f"    custom_id: {child.custom_id}")
                 self.logger.info(f"    {child}")
+
+    async def on_error(self, event, *args, **kwargs):
+        self.logger.error(event)
+
+    async def on_disconnect(self):
+        self.logger.info("Bot disconnected")
+
+    async def on_connect(self):
+        self.logger.info("Bot connected")
+    
+    async def on_resumed(self): 
+        self.logger.info("Bot resumed")
+
+    async def on_voice_state_update(self, member, before, after):
+        self.logger.info(f"Voice state update: {member} {before} {after}")
