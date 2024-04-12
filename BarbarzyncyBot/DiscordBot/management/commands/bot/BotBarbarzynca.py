@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext import tasks
 
 from django.conf import settings as project_settings
 
@@ -74,6 +75,7 @@ class BotBarbarzynca(commands.Bot):
 
     async def on_ready(self):
         """Executed when the bot is ready."""
+        self.heartbeat.start()
         self.logger.info(f"Logged in as {self.user} (ID: {self.user.id})")
         await self.tree.sync()
 
@@ -160,3 +162,7 @@ class BotBarbarzynca(commands.Bot):
 
     async def on_voice_state_update(self, member, before, after):
         self.logger.info(f"Voice state update: {member} {before} {after}")
+
+    @tasks.loop(seconds=300)
+    async def heartbeat(self):
+        self.logger.info(f"Heartbeat")
