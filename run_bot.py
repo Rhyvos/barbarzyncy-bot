@@ -1,29 +1,34 @@
-import subprocess
+import django
 import os
-import argparse
+import sys
+import asyncio
 
 
-def start_bot():
-    subprocess.Popen(["python", "BarbarzyncyBot/bot/barbarzyncy_bot.py"], preexec_fn=os.setsid)
-    subprocess.Popen(["python", "BarbarzyncyBot/bot/utils/update_bot.py"], preexec_fn=os.setsid)
-    subprocess.Popen(["python", "BarbarzyncyBot/bot/utils/check_bot_health.py"], preexec_fn=os.setsid)
+from django.conf import settings as project_settings
+from dotenv import dotenv_values
+from bot.utils.bot_logger import bot_log_handler, bot_log_format
 
-def kill_bot():
-    subprocess.Popen(["pkill", "-f", "barbarzyncy_bot.py"])
-    subprocess.Popen(["pkill", "-f", "update_bot.py"])
-    subprocess.Popen(["pkill", "-f", "check_bot_health.py"])
+DOTENV_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'BarbarzyncyBot', '.env')
+settings = dotenv_values(DOTENV_PATH)
+sys.path.append(settings['DJANGO_ROOT'])
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BotManager.settings")
+django.setup()
 
+from bot.BotBarbarzynca import BotBarbarzynca
 
-def main():
-    parser = argparse.ArgumentParser(description='Uruchamia bota, lub kończy jego działanie.')
-    parser.add_argument('--kill', action='store_true', help='Ubija wszystkie procesy związane z botem')
-    args = parser.parse_args()
+bot_log_handler = bot_log_handler()
 
-    if args.kill:
-        kill_bot()
-    else:
-        start_bot()
+bot = BotBarbarzynca(command_prefix="!")
+bot.run(
+    settings["DISCORD_BOT_TOKEN"],
+    log_handler=bot_log_handler,
+    log_formatter=bot_log_format(),
+)
 
-if __name__ == "__main__":
-    main()
+def application(environ, start_response):
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    message = 'Barbarzyncy Discord bot healthcheck.\n'
+    version = 'Python %s\n' % sys.version.split()[0]
+    response = '\n'.join([message, version])
+    return [response.encode()]
