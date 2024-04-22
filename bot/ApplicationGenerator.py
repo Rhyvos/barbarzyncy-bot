@@ -3,9 +3,9 @@ from discord import ui
 from asgiref.sync import sync_to_async
 from functools import partial
 
-from .DynamicView import DynamicView
-from .EditModal import EditModal
-from .utils.bot_logger import bot_logger
+from DynamicView import DynamicView
+from EditModal import EditModal
+from utils.bot_logger import bot_logger
 
 from BotQuestions.models import Question
 

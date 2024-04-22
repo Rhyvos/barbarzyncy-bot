@@ -11,9 +11,9 @@ from asgiref.sync import sync_to_async
 
 from BotQuestions.models import RequirementType
 from WelcomeMessage.models import WelcomeMessage
-from .DynamicView import DynamicView
-from .ApplicationGenerator import ApplicationGenerator
-from .utils.bot_logger import bot_logger
+from DynamicView import DynamicView
+from ApplicationGenerator import ApplicationGenerator
+from utils.bot_logger import bot_logger
 import psutil
 
 

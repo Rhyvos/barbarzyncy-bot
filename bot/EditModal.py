@@ -1,7 +1,7 @@
 import discord
 from discord import ui
 
-from .utils.bot_logger import bot_logger
+from utils.bot_logger import bot_logger
 
 
 class EditModal(ui.Modal):

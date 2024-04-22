@@ -8,7 +8,7 @@ from django.conf import settings as project_settings
 from dotenv import dotenv_values
 from utils.bot_logger import bot_log_handler, bot_log_format
 
-DOTENV_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../BarbarzyncyBot', '.env')
+DOTENV_PATH = os.path.join(os.path.abspath(os.path.dirname(__name__)), '../BarbarzyncyBot', '.env')
 settings = dotenv_values(DOTENV_PATH)
 sys.path.append(settings['DJANGO_ROOT'])
 
