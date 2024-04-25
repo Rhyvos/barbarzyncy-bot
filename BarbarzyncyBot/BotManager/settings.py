@@ -15,7 +15,7 @@ import os
 from dotenv import load_dotenv
 
 
-VERSION = '1.0.4'
+VERSION = '1.0.5'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'BotQuestions',
     'DiscordBot',
     'WelcomeMessage',
-    'RestartBot',
     'LogsViewer',
     'UpdateBot',
 ]
@@ -73,7 +72,6 @@ TEMPLATES = [
             BASE_DIR / 'BotSettings' / 'templates',
             BASE_DIR / 'BotQuestions' / 'templates',
             BASE_DIR / 'WelcomeMessage' / 'templates',
-            BASE_DIR / 'RestartBot' / 'templates',
             BASE_DIR / 'LogsViewer' / 'templates',
         ],
         'APP_DIRS': True,

@@ -25,10 +25,8 @@
           <a class="nav-link {% if request.resolver_match.url_name == 'welcome-message' %}active{% endif %}" href="{% url 'welcome-message' %}">Welcome Message</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'run-bot' or request.resolver_match.url_name == 'update-bot'%}active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Bot</a>
+          <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'update-bot'%}active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Bot</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'run-bot' %}active{% endif %}" href="{% url 'run-bot' %}">Restart</a></li>
-            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item {% if request.resolver_match.url_name == 'update-bot' %}active{% endif %}" href="{% url 'update-bot' %}">Update</a></li>
           </ul>
         </li>

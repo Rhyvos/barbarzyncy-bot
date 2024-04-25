@@ -15,7 +15,8 @@ def logs_view(request):
     try:
         with open(log_file_path, 'r', encoding='utf-8') as file:
             lines = file.readlines()
-            log_entries = [line.rstrip('\r\n') for line in lines[-100:]]
+            log_entries = [line.rstrip('\r\n') for line in lines[-200:]]
+            log_entries.reverse()
             log_entries = '\n'.join(log_entries)
     except Exception as e:
         return render(request, 'view_logs.html', {'log_entries': '', 'error_message': e})

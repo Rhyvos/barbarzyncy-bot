@@ -24,7 +24,6 @@ urlpatterns = [
     path('', include('BotSettings.urls')),
     path('', include('BotQuestions.urls')),
     path('', include('WelcomeMessage.urls')),
-    path('', include('RestartBot.urls')),
     path('', include('UpdateBot.urls')),
     path('', include('LogsViewer.urls')),
     path('', HomeView.as_view(), name='home'),
