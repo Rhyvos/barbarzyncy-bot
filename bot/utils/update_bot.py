@@ -2,7 +2,7 @@ import git
 import os
 import subprocess
 
-from .bot_logger import bot_logger, log
+from bot_logger import bot_logger, log
 
 from dotenv import load_dotenv
 

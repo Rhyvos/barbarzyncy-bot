@@ -89,6 +89,7 @@ class ApplicationGenerator:
 
         if interaction.user.name == application_owner:
             await channel.delete()
+            self.bot.remove_user_views(application_owner)
         else:
             await interaction.response.send_message(
                 f"Podanie możne usunąć wyłącznie {application_owner}",
@@ -102,6 +103,7 @@ class ApplicationGenerator:
             await interaction.response.send_message(
                 f"Podanie możne edytować wyłącznie {application_owner}",
                 ephemeral=True,
+                delete_after=10,
             )
             return
 
@@ -156,7 +158,7 @@ class ApplicationGenerator:
             self.bot.get_all_channels(), name=self.channel_name.lower()
         )
         if channel is not None:
-            self._generate_application_buttons = await self._generate_application_buttons(channel)
+            await self._generate_application_buttons(channel)
         else:
             self.logger.info(
                 f"Kanał {self.channel_name.lower()} nie został znaleziony."
@@ -178,7 +180,7 @@ class ApplicationGenerator:
     
 
     def _generate_fill_in_button(self, index, message):
-        view = DynamicView(self.channel_name, self.logger)
+        view = DynamicView(self.channel_name, self.logger, timeout=7200)
         view.add_button(
             f"field:{index}",
             "Uzupełnij",
@@ -189,7 +191,6 @@ class ApplicationGenerator:
             ),
             style=discord.ButtonStyle.blurple,
         )
-        self.bot.add_view(view)
         return view
 
     def _add_buttons_to_view(self, view):

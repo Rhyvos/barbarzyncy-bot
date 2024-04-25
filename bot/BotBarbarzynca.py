@@ -1,5 +1,3 @@
-import sys
-print(sys.path)
 import discord
 from discord.ext import commands
 from discord.ext import tasks
@@ -33,7 +31,7 @@ class BotBarbarzynca(commands.Bot):
 
         # List of bot extensions to load.
         self.initial_extensions = [
-            "DiscordBot.management.commands.bot.cogs.RecruitmentCommands"
+            "cogs.RecruitmentCommands"
         ]
 
         # Load settings from .env file using project settings.
@@ -42,8 +40,6 @@ class BotBarbarzynca(commands.Bot):
 
     async def setup_hook(self):
         """Loads all initial extensions for the bot."""
-        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
-            self.logger.info(f"psutil:{proc}")
         for extension in self.initial_extensions:
             await self.load_extension(extension)
 
@@ -144,11 +140,6 @@ class BotBarbarzynca(commands.Bot):
 
     async def on_interaction(self, interaction: discord.Interaction):
         self.logger.info(f"Interaction: {interaction.data}")
-        self.logger.info("persistent_views:")
-        for view in self.persistent_views:
-            for child in view.children:
-                self.logger.info(f"    custom_id: {child.custom_id}")
-                self.logger.info(f"    {child}")
 
     async def on_error(self, event, *args, **kwargs):
         self.logger.error(event)
@@ -161,9 +152,6 @@ class BotBarbarzynca(commands.Bot):
     
     async def on_resumed(self): 
         self.logger.info("Bot resumed")
-
-    async def on_voice_state_update(self, member, before, after):
-        self.logger.info(f"Voice state update: {member} {before} {after}")
 
     @tasks.loop(seconds=300)
     async def heartbeat(self):

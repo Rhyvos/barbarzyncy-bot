@@ -8,13 +8,13 @@ class DynamicView(View):
     A dynamic view that allows for the addition of buttons with custom callbacks.
     """
 
-    def __init__(self, view_id, logger):
+    def __init__(self, view_id, logger, timeout=None):
         """
         Initializes the DynamicView with a specific view ID.
 
         :param view_id: A unique identifier for the view.
         """
-        super().__init__(timeout=None)  # Disable timeout for persistence.
+        super().__init__(timeout=timeout)  # Disable timeout for persistence.
         self.view_id = view_id
         self.logger = logger
 
