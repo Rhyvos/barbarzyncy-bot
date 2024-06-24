@@ -58,7 +58,7 @@ class ApplicationGenerator:
             title=f"Recruitment {self.req_type.type_name}",
             color=discord.Color.blue(),
         )
-        embed.set_author(name=self.user.name, icon_url=self.user.avatar.url)
+        embed.set_author(name=self.user.name, icon_url=self.user.display_avatar.url)
         for question in questions:
             embed.add_field(
                 name=f"{question.question_text}", value="<not filled in>", inline=False
@@ -89,7 +89,6 @@ class ApplicationGenerator:
 
         if interaction.user.name == application_owner:
             await channel.delete()
-            self.bot.remove_user_views(application_owner)
         else:
             await interaction.response.send_message(
                 f"Podanie możne usunąć wyłącznie {application_owner}",
