@@ -31,7 +31,8 @@ class BotBarbarzynca(commands.Bot):
 
         # List of bot extensions to load.
         self.initial_extensions = [
-            "cogs.RecruitmentCommands"
+            "cogs.RecruitmentCommands",
+            "cogs.ReloadCommand",
         ]
 
         # Load settings from .env file using project settings.

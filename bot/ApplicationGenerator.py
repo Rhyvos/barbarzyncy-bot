@@ -2,6 +2,7 @@ import discord
 from discord import ui
 from asgiref.sync import sync_to_async
 from functools import partial
+import re
 
 from DynamicView import DynamicView
 from EditModal import EditModal
@@ -55,13 +56,13 @@ class ApplicationGenerator:
             return False
 
         embed = discord.Embed(
-            title=f"Recruitment {self.req_type.type_name}",
+            title=f"Rekrutacja {self.req_type.type_name}",
             color=discord.Color.blue(),
         )
         embed.set_author(name=self.user.name, icon_url=self.user.display_avatar.url)
         for question in questions:
             embed.add_field(
-                name=f"{question.question_text}", value="<not filled in>", inline=False
+                name=f"{question.question_text}", value="<uzupełnij>", inline=False
             )
 
         view = DynamicView(self.channel_name, self.logger)
@@ -86,8 +87,8 @@ class ApplicationGenerator:
     async def on_button_click_remove_channel(self, interaction, button):
         channel = interaction.channel
         application_owner = channel.name.split("-")[-1]
-
-        if interaction.user.name == application_owner:
+        name = re.sub('[^0-9a-zA-Z]+', "", interaction.user.name)
+        if name != application_owner:
             await channel.delete()
         else:
             await interaction.response.send_message(
@@ -98,7 +99,8 @@ class ApplicationGenerator:
     async def on_button_click_edit_application(self, interaction, button):
         channel = interaction.channel
         application_owner = channel.name.split("-")[-1]
-        if interaction.user.name != application_owner:
+        name = re.sub('[^0-9a-zA-Z]+', "", interaction.user.name)
+        if name != application_owner:
             await interaction.response.send_message(
                 f"Podanie możne edytować wyłącznie {application_owner}",
                 ephemeral=True,
