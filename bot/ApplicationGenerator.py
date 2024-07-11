@@ -87,19 +87,21 @@ class ApplicationGenerator:
     async def on_button_click_remove_channel(self, interaction, button):
         channel = interaction.channel
         application_owner = channel.name.split("-")[-1]
-        name = re.sub('[^0-9a-zA-Z]+', "", interaction.user.name)
+        name = interaction.user.name.replace(".", "")
         if name != application_owner:
-            await channel.delete()
-        else:
             await interaction.response.send_message(
-                f"Podanie możne usunąć wyłącznie {application_owner}",
+                f"Podanie możne edytować wyłącznie {application_owner}",
                 ephemeral=True,
+                delete_after=10,
             )
+            return
+
+        await channel.delete()
 
     async def on_button_click_edit_application(self, interaction, button):
         channel = interaction.channel
         application_owner = channel.name.split("-")[-1]
-        name = re.sub('[^0-9a-zA-Z]+', "", interaction.user.name)
+        name = interaction.user.name.replace(".", "")
         if name != application_owner:
             await interaction.response.send_message(
                 f"Podanie możne edytować wyłącznie {application_owner}",
