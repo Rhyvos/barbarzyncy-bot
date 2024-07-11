@@ -34,5 +34,5 @@ class ReloadCommands(commands.Cog):
         except Exception as e:
             await ctx.send(f'Error reloading {cog}: {e}')
 
-def setup(bot):
-    bot.add_cog(ReloadCommands(bot))
+async def setup(bot):
+    await bot.add_cog(ReloadCommands(bot))
