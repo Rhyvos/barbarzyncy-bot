@@ -22,16 +22,22 @@ class ReloadCommands(commands.Cog):
             return True
         return False
 
-    @commands.command(name='reload', hidden=True)
+    @commands.hybrid_command(description="Reloads a cog")
     @commands.is_owner()
     async def reload(self, ctx, cog: str):
         """Reloads a cog"""
         await ctx.defer(ephemeral=True)
         try:
-            self.bot.unload_extension(f'cogs.{cog}')
-            self.bot.load_extension(f'cogs.{cog}')
+            extension = f'cogs.{cog}'
+            if extension in self.bot.extensions:
+                self.bot.logger.info(f"Unloading {cog}...")
+                await self.bot.unload_extension(extension)
+
+            self.bot.logger.info(f"Loading {cog}...")
+            await self.bot.load_extension(extension)
             await ctx.send(f'Successfully reloaded {cog}')
         except Exception as e:
+            self.bot.logger.error(f"Error reloading {cog}: {e}")
             await ctx.send(f'Error reloading {cog}: {e}')
 
 async def setup(bot):
